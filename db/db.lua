@@ -32,25 +32,28 @@ end
 
 function M.execute_query(query, values)
 	local stmt = db:prepare(query)
+	local err
 
 	if values then
 		local bind_result = stmt:bind_names(values)
-		if bind_result == sqlite3.ERROR then
-			return _, "Error running bind_names."
+		if bind_result ~= sqlite3.OK then
+			err = "Error running bind_names."
 		end
 	end
 
-	local step_result = stmt:step()
-	if step_result == sqlite3.ERROR then
-		return _, "Error running step."
+	local result = {}
+	for row in stmt:nrows() do
+		table.insert(result, row)
 	end
 
-	local data = stmt:nrows()
-	if data then
-		return data, _
+	if #result == 0 then
+		result = nil
+	elseif result[1] == nil then
+		result = result[0]
 	end
 
 	stmt:finalize()
+	return result, err
 end
 
 return M
