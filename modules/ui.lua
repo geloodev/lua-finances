@@ -1,5 +1,22 @@
 local M = {}
 
+function love.load()
+	x = 100
+end
+
+function love.update(dt)
+	if love.keyboard.isDown("right") then
+		x = x + 150 * dt
+	elseif love.keyboard.isDown("left") then
+		x = x - 150 * dt
+	end
+end
+
+function love.draw()
+	love.graphics.rectangle("line", x, 50, 100, 150)
+end
+
+--[[
 function M.start_menu()
 	figlet("gelo finances")
 	print("CHOOSE AN OPTION: ")
@@ -22,5 +39,6 @@ function figlet(text, font)
 		io.stderr:write(string.format("Attempted command: %s\n", command))
 	end
 end
+--]]
 
 return M
