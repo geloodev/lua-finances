@@ -1,21 +1,32 @@
---local Database = require("modules/database")
-local UI = require("modules/ui")
---local AccountController = require("modules/account_controller")
+-- libs
+Tick = require("lib.tick")
+Object = require("lib.classic")
 
---[[
-while input ~= 0 do
-	input = UI.start_menu()
-	if input == 1 then
-		local data, error = AccountController.get_all_accounts()
-		if data then
-			for _, account in ipairs(data) do
-				print(account.name)
-			end
-		else 
-			print("Error: ", error)
-		end
-	elseif input == 0 then
-		print("BYE BYE...")
+--ui
+UIManager = require("modules.ui.ui_manager")
+require("modules.ui.components.shape")
+require("modules.ui.components.rectangle")
+require("modules.ui.components.circle")
+
+function love.load()
+	UIManager.setColorTheme("kanagawa")
+	print("BackgroundColor: ", love.graphics.getBackgroundColor())
+	objList = {}
+end
+
+function love.update(dt)
+	table.insert(
+		objList,
+		Circle(math.random(0, love.graphics.getWidth()), 0, 4)
+	)
+
+	for _, obj in ipairs(objList) do
+		obj:update(dt)
 	end
 end
---]]
+
+function love.draw()
+	for _, obj in ipairs(objList) do
+		obj:draw()
+	end
+end
