@@ -1,5 +1,5 @@
 local M = {}
-local Database = require("modules/database")
+local Database = require("modules.database_manager")
 
 function M.get_all_accounts()
 	return Database.execute_query("SELECT * FROM accounts")

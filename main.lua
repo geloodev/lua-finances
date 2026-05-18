@@ -2,14 +2,17 @@
 Tick = require("lib.tick")
 Object = require("lib.classic")
 
---ui
-UIManager = require("modules.ui.ui_manager")
+-- modules
+Database = require("modules.database_manager")
+UI = require("modules.ui.ui_manager")
 require("modules.ui.components.shape")
 require("modules.ui.components.rectangle")
 require("modules.ui.components.circle")
 
 function love.load()
-	UIManager.setColorTheme("kanagawa")
+	package.cpath = package.cpath .. ";./lib/?.dll"
+	database_message = Database.start()
+	UI.setColorTheme("kanagawa")
 	print("BackgroundColor: ", love.graphics.getBackgroundColor())
 	objList = {}
 end
@@ -26,7 +29,5 @@ function love.update(dt)
 end
 
 function love.draw()
-	for _, obj in ipairs(objList) do
-		obj:draw()
-	end
+	love.graphics.print(database_message, 10, 10)
 end
